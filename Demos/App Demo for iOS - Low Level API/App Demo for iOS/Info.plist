@@ -40,5 +40,18 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>UTImportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.url</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>1Password Find Login Action</string>
+			<key>UTTypeIdentifier</key>
+			<string>org.appextension.find-login-action</string>
+		</dict>
+	</array>
 </dict>
 </plist>

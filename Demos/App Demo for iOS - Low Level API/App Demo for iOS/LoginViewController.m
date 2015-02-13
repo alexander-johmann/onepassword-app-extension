@@ -10,11 +10,12 @@
 #import "OnePasswordExtension.h"
 #import "LoginInformation.h"
 
-@interface LoginViewController () <UITextFieldDelegate>
+@interface LoginViewController () <UITextFieldDelegate, UIActivityItemSource>
 
 @property (weak, nonatomic) IBOutlet UIButton *onepasswordSigninButton;
 @property (weak, nonatomic) IBOutlet UITextField *usernameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (nonatomic) NSExtensionItem *onePasswordExtensionItem;
 
 @end
 
@@ -36,9 +37,9 @@
 	OnePasswordExtension *onePasswordExtension = [OnePasswordExtension sharedExtension];
 
 	// Create the 1Password extension item.
-	NSExtensionItem *extensionItem = [onePasswordExtension createExtensionItemToFindLoginForURLString:@"https://www.acme.com"];
+	self.onePasswordExtensionItem = [onePasswordExtension createExtensionItemToFindLoginForURLString:@"https://www.acme.com"];
 
-	NSArray *activityItems = @[ extensionItem ]; // Add as many activity items as you please
+	NSArray *activityItems = @[ self ]; // Add as many activity items as you please
 
 	// Setting up the activity view controller
 	UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems  applicationActivities:nil];
@@ -87,6 +88,30 @@
 	if (textField == self.usernameTextField) {
 		[LoginInformation sharedLoginInformation].username = textField.text;
 	}
+}
+
+
+#pragma mark - UIActivityItemSource Protocol
+
+- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController {
+	// Return the current URL as a placeholder
+	return [NSURL URLWithString:@"https://www.acme.com"];
+}
+
+- (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType {
+	if ([[OnePasswordExtension sharedExtension] isOnePasswordExtensionActivityType:activityType]) {
+		// Return the 1Password extension item
+		return self.onePasswordExtensionItem;
+	}
+	else {
+		// Return the current URL
+		return [NSURL URLWithString:@"https://www.acme.com"];
+	}
+}
+
+- (NSString *)activityViewController:(UIActivityViewController *)activityViewController dataTypeIdentifierForActivityType:(NSString *)activityType {
+	// Because of our UTI declaration, this UTI now satisfies both the 1Password Extension and the usual NSURL for Share extensions.
+	return @"org.appextension.find-login-action";
 }
 
 @end
