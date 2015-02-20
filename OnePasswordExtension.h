@@ -52,10 +52,10 @@
 
 /*!
  Determines if the 1Password Extension is available. Allows you to only show the 1Password login button to those
- that can use it. Of course, you could leave the button enabled and educate users about the virtues of strong, unique 
+ that can use it. Of course, you could leave the button enabled and educate users about the virtues of strong, unique
  passwords instead :)
- 
- Note that this returns YES if any app that supports the generic `org-appextension-feature-password-management` feature 
+
+ Note that this returns YES if any app that supports the generic `org-appextension-feature-password-management` feature
  is installed.
  */
 #ifdef __IPHONE_8_0
@@ -65,18 +65,18 @@
 #endif
 
 /*!
- Called from your login page, this method will find all available logins for the given URLString. After the user selects 
- a login, it is stored into an NSDictionary and given to your completion handler. Use the `Login Dictionary keys` above to 
+ Called from your login page, this method will find all available logins for the given URLString. After the user selects
+ a login, it is stored into an NSDictionary and given to your completion handler. Use the `Login Dictionary keys` above to
  extract the needed information and update your UI. The completion block is guaranteed to be called on the main thread.
  */
 - (void)findLoginForURLString:(NSString *)URLString forViewController:(UIViewController *)viewController sender:(id)sender completion:(void (^)(NSDictionary *loginDict, NSError *error))completion;
 
 /*!
- Create a new login within 1Password and allow the user to generate a new password before saving. The provided URLString should be 
+ Create a new login within 1Password and allow the user to generate a new password before saving. The provided URLString should be
  unique to your app or service and be identical to what you pass into the find login method.
- 
- Details about the saved login, including the generated password, are stored in an NSDictionary and given to your completion handler. 
- Use the `Login Dictionary keys` above to extract the needed information and update your UI. For example, updating the UI with the 
+
+ Details about the saved login, including the generated password, are stored in an NSDictionary and given to your completion handler.
+ Use the `Login Dictionary keys` above to extract the needed information and update your UI. For example, updating the UI with the
  newly generated password lets the user know their action was successful. The completion block is guaranteed to be called on the main
  thread.
  */
